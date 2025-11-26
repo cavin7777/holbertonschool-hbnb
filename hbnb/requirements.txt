@@ -1,0 +1,4 @@
+flask
+flask-restx
+flask_sqlalchemy
+flask-bcrypt

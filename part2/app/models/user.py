@@ -30,18 +30,6 @@ class User:
             "email": self.email
         }
 
-    def to_dict_basic(self):
-        """Return a basic dictionary representation of the place."""
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "price": self.price,
-            "owner": self.owner.to_dict() if self.owner else None,
-            "amenities": [{"id": a.id, "name": a.name} for a in self.amenities]
-        }
-
-
     def save(self):
         """Update the updated_at timestamp whenever the object is modified"""
         self.updated_at = datetime.now()

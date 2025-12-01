@@ -19,13 +19,19 @@ class ReviewList(Resource):
     def post(self):
         """Register a new review"""
         # Placeholder for the logic to register a new review
-        pass
+        data = api.payload
+        try:
+            amenity = facade.create_amenity(data)
+            return {"id": amenity.id, "name": amenity.name}, 201
+        except ValueError as e:
+            return {"message": str(e)}, 400
 
     @api.response(200, 'List of reviews retrieved successfully')
     def get(self):
         """Retrieve a list of all reviews"""
         # Placeholder for logic to return a list of all reviews
-        pass
+        amenities = facade.get_all_amenities()
+        return [{"id": a.id, "name": a.name} for a in amenities], 200
 
 @api.route('/<review_id>')
 class ReviewResource(Resource):

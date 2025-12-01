@@ -1,5 +1,7 @@
+import uuid
 from app.persistence.repository import InMemoryRepository
-
+from app.models.amenity import Amenity
+from app.models.place import Place
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
@@ -7,7 +9,9 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
+    # USER FACADE
     def create_user(self, user_data):
+        from app.models.user import User
         user = User(**user_data)
         self.user_repo.add(user)
         return user
@@ -17,61 +21,108 @@ class HBnBFacade:
 
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
-    def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
 
+    # AMENITY FACADE
     def create_amenity(self, amenity_data):
-    # Placeholder for logic to create an amenity
-        pass
+        if not amenity_data.get("name"):
+            raise ValueError("Amenity name is required")
+
+        amenity = Amenity(name=amenity_data["name"])
+        self.amenity_repo.add(amenity)
+        return amenity
 
     def get_amenity(self, amenity_id):
-    # Placeholder for logic to retrieve an amenity by ID
-        pass
+        return self.amenity_repo.get(amenity_id)
 
     def get_all_amenities(self):
-    # Placeholder for logic to retrieve all amenities
-        pass
+        return self.amenity_repo.get_all()
 
     def update_amenity(self, amenity_id, amenity_data):
-    # Placeholder for logic to update an amenity
-        pass
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            return None
+        if "name" in amenity_data:
+            amenity.name = amenity_data["name"]
+        self.amenity_repo.update(amenity_id, {"name": amenity.name})
+        return amenity
 
+    # PLACE FACADE
     def create_place(self, place_data):
-    # Placeholder for logic to create a place, including validation for price, latitude, and longitude
-        pass
+        try:
+            owner = self.user_repo.get(place_data['owner_id'])
+            if not owner:
+                raise ValueError("Owner does not exist")
+
+            amenities = []
+            for amenity_id in place_data.get("amenities", []):
+                amenity = self.amenity_repo.get(amenity_id)
+                if not amenity:
+                    raise ValueError(f"Amenity not found: {amenity_id}")
+                amenities.append(amenity)
+
+            place_data_copy = place_data.copy()
+            place_data_copy.pop("owner_id", None)
+            place_data_copy.pop("amenities", None)
+            place = Place(owner=owner, **place_data_copy)
+            place.amenities = amenities
+
+            self.place_repo.add(place)
+            return place
+
+        except Exception as e:
+            raise ValueError(str(e))
 
     def get_place(self, place_id):
-    # Placeholder for logic to retrieve a place by ID, including associated owner and amenities
-        pass
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+        return place
 
     def get_all_places(self):
-    # Placeholder for logic to retrieve all places
-        pass
+        return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-    # Placeholder for logic to update a place
-        pass
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
 
+        # Allowed updates
+        for key, value in place_data.items():
+            if key == "owner_id":
+                owner = self.user_repo.get(value)
+                if not owner:
+                    raise ValueError("Owner not found")
+                place.owner = owner
+            elif key == "amenities":
+                new_amenities = []
+                for aid in value:
+                    amenity = self.amenity_repo.get(aid)
+                    if not amenity:
+                        raise ValueError(f"Amenity not found: {aid}")
+                    new_amenities.append(amenity)
+                place.amenities = new_amenities
+            else:
+                setattr(place, key, value)
+
+        self.place_repo.save(place)
+        return place
+
+
+    # REVIEW FACADE
     def create_review(self, review_data):
-    # Placeholder for logic to create a review, including validation for user_id, place_id, and rating
         pass
 
     def get_review(self, review_id):
-    # Placeholder for logic to retrieve a review by ID
         pass
 
     def get_all_reviews(self):
-    # Placeholder for logic to retrieve all reviews
         pass
 
     def get_reviews_by_place(self, place_id):
-    # Placeholder for logic to retrieve all reviews for a specific place
         pass
 
     def update_review(self, review_id, review_data):
-    # Placeholder for logic to update a review
         pass
 
     def delete_review(self, review_id):
-    # Placeholder for logic to delete a review
         pass

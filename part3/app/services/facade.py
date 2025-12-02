@@ -2,6 +2,9 @@ import uuid
 from app.persistence.repository import InMemoryRepository
 from app.models.amenity import Amenity
 from app.models.place import Place
+from app.models.user import User
+from werkzeug.security import generate_password_hash, check_password_hash
+
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
@@ -9,10 +12,17 @@ class HBnBFacade:
         self.review_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
 
+    #PASSWORD FACADE
+    def hash_password(self, password):
+        return generate_password_hash(password)
+
+    def verify_password(self, password, hashed):
+        return check_password_hash(hashed, password)
+
     # USER FACADE
-    def create_user(self, user_data):
-        from app.models.user import User
-        user = User(**user_data)
+    def create_user(self, first_name, last_name, email, password):
+        user = User(first_name, last_name, email)
+        user.hash_password(password)  # hash password BEFORE storage
         self.user_repo.add(user)
         return user
 

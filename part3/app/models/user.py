@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from app import bcrypt
 
 class User:
     def __init__(self, first_name, last_name, email, is_admin=False):
@@ -10,6 +11,7 @@ class User:
         self.last_name = last_name
         self.email = email
         self.is_admin = is_admin
+        self.password = None
     
         if not first_name or len(first_name) > 50:
             raise ValueError("first_name is required and must be <= 50 characters")
@@ -30,18 +32,6 @@ class User:
             "email": self.email
         }
 
-    def to_dict_basic(self):
-        """Return a basic dictionary representation of the place."""
-        return {
-            "id": self.id,
-            "title": self.title,
-            "description": self.description,
-            "price": self.price,
-            "owner": self.owner.to_dict() if self.owner else None,
-            "amenities": [{"id": a.id, "name": a.name} for a in self.amenities]
-        }
-
-
     def save(self):
         """Update the updated_at timestamp whenever the object is modified"""
         self.updated_at = datetime.now()
@@ -52,3 +42,13 @@ class User:
             if hasattr(self, key):
                 setattr(self, key, value)
         self.save()  # Update the updated_at timestamp
+
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        truncated = password[:72] 
+        self.password = bcrypt.generate_password_hash(truncated).decode('utf-8')
+
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        truncated = password[:72]
+        return bcrypt.check_password_hash(self.password, truncated)

@@ -4,7 +4,6 @@ from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
-
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
@@ -13,11 +12,15 @@ class HBnBFacade:
         self.amenity_repo = InMemoryRepository()
 
     #PASSWORD FACADE
+
     def hash_password(self, password):
         return generate_password_hash(password)
 
-    def verify_password(self, password, hashed):
-        return check_password_hash(hashed, password)
+    def verify_password(self, password, user: User):
+        """Verify password using the User instance."""
+        if not user or not user.password:
+            return False
+        return user.verify_password(password)
 
     # USER FACADE
     def create_user(self, first_name, last_name, email, password):
@@ -31,7 +34,7 @@ class HBnBFacade:
 
     def get_user_by_email(self, email):
         return self.user_repo.get_by_attribute('email', email)
-
+    
     # AMENITY FACADE
     def create_amenity(self, amenity_data):
         if not amenity_data.get("name"):
@@ -114,7 +117,7 @@ class HBnBFacade:
             else:
                 setattr(place, key, value)
 
-        self.place_repo.save(place)
+        self.place_repo.update(place_id, place)
         return place
 
 

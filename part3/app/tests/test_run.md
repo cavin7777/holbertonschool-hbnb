@@ -5,7 +5,7 @@ python -m app.tests.test_user
 Invoke-RestMethod -Uri http://localhost:5000/api/v1/users/ `
   -Method POST `
   -ContentType "application/json" `
-  -Body '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com"}'
+  -Body '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "password": "string123"}'
 
 
 id                                   first_name last_name email

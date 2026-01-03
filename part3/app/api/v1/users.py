@@ -7,7 +7,8 @@ api = Namespace('users', description='User operations')
 user_model = api.model('User', {
     'first_name': fields.String(required=True, description='First name of the user'),
     'last_name': fields.String(required=True, description='Last name of the user'),
-    'email': fields.String(required=True, description='Email of the user')
+    'email': fields.String(required=True, description='Email of the user'),
+    'password': fields.String(required=True, description='User password')
 })
 
 @api.route('/')
@@ -26,8 +27,10 @@ class UserList(Resource):
         if existing_user:
             return {'error': 'Email already registered'}, 400
 
+        password = user_data.pop('password')
         new_user = facade.create_user(user_data)
-        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
+        new_user.hash_password(password)
+        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email, 'message': 'User successfully created'}, 201
 
     def get(self):
         """ Retrieve a list of all users """
@@ -56,7 +59,7 @@ class UserResource(Resource):
         user = facade.get_user(user_id)
 
         if not user_data:
-            return {'error': 'No data provided'}, 404       
+            return {'error': 'No data provided'}, 404 
         if not user_data.get('first_name') or not user_data.get('last_name') or not user_data.get('email'):
             return {'error': ' All Field must be filled'}, 404
         if 'first_name' in user_data and len(user_data['first_name']) > 50:
@@ -70,5 +73,11 @@ class UserResource(Resource):
         existing_user = facade.get_user_by_email(user_data['email'])
         if existing_user and existing_user.id != user_id:
             return {'error': 'Email already registered'}, 400
+        
+        password = user_data.pop('password')
         updated_user = facade.update_user(user_id, user_data)
+
+        if password:
+            updated_user.hash_password(password)
+        
         return {'id': updated_user.id, 'first_name': updated_user.first_name, 'last_name': updated_user.last_name, 'email': updated_user.email}, 200

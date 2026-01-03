@@ -1,4 +1,6 @@
 from .base_model import BaseModel
+import bcrypt
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin=False):
@@ -7,6 +9,7 @@ class User(BaseModel):
         self.last_name = self.validate_name(last_name, "last_name", 50)
         self.email = self.validate_email(email)
         self.is_admin = bool(is_admin)
+        self.password = None
    
     @staticmethod
     def validate_email(email):
@@ -15,3 +18,11 @@ class User(BaseModel):
         if "@" not in email:
             raise ValueError("Invalid email format")
         return email
+    
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        self.password = generate_password_hash(password)
+    
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        return check_password_hash(self.password, password)

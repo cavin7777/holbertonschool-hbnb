@@ -3,19 +3,11 @@ from .base_model import BaseModel
 class User(BaseModel):
     def __init__(self, first_name, last_name, email, is_admin=False):
         super().__init__()
-        self.first_name = self.validate_name(first_name, "first_name")
-        self.last_name = self.validate_name(last_name, "last_name")
-        self.email = email
+        self.first_name = self.validate_name(first_name, "first_name",50)
+        self.last_name = self.validate_name(last_name, "last_name", 50)
+        self.email = self.validate_email(email)
         self.is_admin = bool(is_admin)
-
-    @staticmethod
-    def validate_name(value, field_name):
-        if not value or not isinstance(value, str):
-            raise ValueError(f"{field_name} must be a non-empty string")
-        if len(value) > 50:
-            raise ValueError(f"{field_name} must be at most 50 characters")
-        return value
-    
+   
     @staticmethod
     def validate_email(email):
         if not email or not isinstance(email, str):

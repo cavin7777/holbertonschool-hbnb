@@ -15,34 +15,31 @@ class AmenityList(Resource):
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new amenity"""
-        # Placeholder for the logic to register a new amenity => DONE
-        data = api.payload
-        try:
-            amenity = facade.create_amenity(data)
-            return {"id": amenity.id, "name": amenity.name}, 201
-        except ValueError as e:
-            return {"message": str(e)}, 400
+        # Placeholder for the logic to register a new amenity
+        amenity_data = api.payload
+        if not amenity_data:
+            return {'Invalid input data'}, 400
+        new_amenity = facade.create_amenity(amenity_data)
+        return {'id': new_amenity.id, 'name': new_amenity.name}, 201
 
     @api.response(200, 'List of amenities retrieved successfully')
-
     def get(self):
         """Retrieve a list of all amenities"""
-        # Placeholder for logic to return a list of all amenities => DONE
+        # Placeholder for logic to return a list of all amenities
         amenities = facade.get_all_amenities()
-        return [{"id": a.id, "name": a.name} for a in amenities], 200
+        return [{'id': amenity.id, 'name': amenity.name} for amenity in amenities], 200
 
 @api.route('/<amenity_id>')
-
 class AmenityResource(Resource):
     @api.response(200, 'Amenity details retrieved successfully')
     @api.response(404, 'Amenity not found')
     def get(self, amenity_id):
         """Get amenity details by ID"""
-        # Placeholder for the logic to retrieve an amenity by ID => DONE
+        # Placeholder for the logic to retrieve an amenity by ID
         amenity = facade.get_amenity(amenity_id)
         if not amenity:
-            return {"message": "Amenity not found"}, 404
-        return {"id": amenity.id, "name": amenity.name}, 200
+            return {'error': 'Amenity not found'}, 404
+        return {'id': amenity.id, 'amenity': amenity.name}, 200
 
     @api.expect(amenity_model)
     @api.response(200, 'Amenity updated successfully')
@@ -50,9 +47,16 @@ class AmenityResource(Resource):
     @api.response(400, 'Invalid input data')
     def put(self, amenity_id):
         """Update an amenity's information"""
-        # Placeholder for the logic to update an amenity by ID => DONE
-        data = api.payload
-        amenity = facade.update_amenity(amenity_id, data)
+        # Placeholder for the logic to update an amenity by ID
+        amenity_data = api.payload
+        amenity = facade.get_amenity(amenity_id)
         if not amenity:
-            return {"message": "Amenity not found"}, 404
-        return {"message": "Amenity updated successfully"}, 200
+            return {'error': 'Amenity not found'}, 404
+        if not amenity_data.get('name'):
+            return {'error': 'Amenity is empty'}, 400
+        if len(amenity_data['name']) > 50:
+            return {'error': 'Amenity must be at most 50 characters'}, 400
+        
+        updated_amenity = facade.update_amenity(amenity_id, amenity_data)
+        return {'id': updated_amenity.id, 'amenity': updated_amenity.name}, 200
+        

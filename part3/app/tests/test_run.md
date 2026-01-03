@@ -5,7 +5,7 @@ python -m app.tests.test_user
 Invoke-RestMethod -Uri http://localhost:5000/api/v1/users/ `
   -Method POST `
   -ContentType "application/json" `
-  -Body '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "password": "string123"}'
+  -Body '{"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com"}'
 
 
 id                                   first_name last_name email
@@ -31,6 +31,6 @@ Invoke-RestMethod -Uri http://localhost:5000/api/v1/places/ `
     "price": 100.0,
     "latitude": 37.7749,
     "longitude": -122.4194,
-    "owner_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "owner_id": "a28afb67-91b7-4d17-912f-9deb187e8b15",
     "amenities": []
   }'

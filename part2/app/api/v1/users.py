@@ -15,7 +15,8 @@ class UserList(Resource):
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
-    @api.response(400, 'Invalid input data')
+    @api.response(404, 'Invalid input data')
+
     def post(self):
         """Register a new user"""
         user_data = api.payload
@@ -27,14 +28,47 @@ class UserList(Resource):
 
         new_user = facade.create_user(user_data)
         return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
-    
+
+    def get(self):
+        """ Retrieve a list of all users """
+        users = facade.get_all_users()
+        return [{'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email} for user in users], 200
+
 @api.route('/<user_id>')
 class UserResource(Resource):
     @api.response(200, 'User details retrieved successfully')
-    @api.response(404, 'User not found')
+    @api.response(404, 'User_ID not found')
+
     def get(self, user_id):
         """Get user details by ID"""
         user = facade.get_user(user_id)
         if not user:
-            return {'error': 'User not found'}, 404
+            return {'error': 'User_ID not found'}, 404
         return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
+    
+    @api.expect(user_model)
+    @api.response(200, 'User details modified successfully')
+    @api.response(400, 'Email already registered')
+    @api.response(404, 'Invalid Data')
+    def put(self, user_id):
+        """ Update user information """
+        user_data = api.payload
+        user = facade.get_user(user_id)
+
+        if not user_data:
+            return {'error': 'No data provided'}, 404       
+        if not user_data.get('first_name') or not user_data.get('last_name') or not user_data.get('email'):
+            return {'error': ' All Field must be filled'}, 404
+        if 'first_name' in user_data and len(user_data['first_name']) > 50:
+            return {'error': 'first_name must be at most 50 characters'}, 404
+        if 'last_name' in user_data and len(user_data['last_name']) > 50:
+            return {'error': 'last_name must be at most 50 characters'}, 404
+        if not user:
+            return {'error': "User_ID doesn't exist"}, 404
+
+        # Simulate email uniqueness check (to be replaced by real validation with persistence)
+        existing_user = facade.get_user_by_email(user_data['email'])
+        if existing_user and existing_user.id != user_id:
+            return {'error': 'Email already registered'}, 400
+        updated_user = facade.update_user(user_id, user_data)
+        return {'id': updated_user.id, 'first_name': updated_user.first_name, 'last_name': updated_user.last_name, 'email': updated_user.email}, 200

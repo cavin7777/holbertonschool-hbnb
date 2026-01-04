@@ -1,15 +1,18 @@
-from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import User
-from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
-    
+from app.models.amenity import Amenity
+from app.services.repositories.user_repository import UserRepository
+from app.services.repositories.place_repository import PlaceRepository
+from app.services.repositories.review_repository import ReviewRepository
+from app.services.repositories.amenity_repository import AmenityRepository
+  
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = SQLAlchemyRepository(User)
-        self.place_repo = SQLAlchemyRepository(Place)
-        self.review_repo = SQLAlchemyRepository(Review)
-        self.amenity_repo = SQLAlchemyRepository(Amenity)
+        self.user_repo = UserRepository()
+        self.place_repo = PlaceRepository()
+        self.review_repo = ReviewRepository()
+        self.amenity_repo = AmenityRepository()
     
     # -------------------- Placeholder method for USER --------------------
     def create_user(self, user_data):
@@ -24,12 +27,15 @@ class HBnBFacade:
         return self.user_repo.get_all()
     
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
     
     def update_user(self, user_id, data):
         user = self.get_user(user_id)
         if not user:
             return None
+        # If password is updated, hash it
+        if "password" in data:
+            user.hash_password(data.pop("password"))
         self.user_repo.update(user_id, data)
         return user
     

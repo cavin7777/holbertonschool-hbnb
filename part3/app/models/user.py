@@ -1,16 +1,24 @@
 from .base_model import BaseModel
-import bcrypt
+from app.extensions import db, bcrypt
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.dialects.mysql import LONGTEXT
 
 class User(BaseModel):
-    def __init__(self, first_name, last_name, email, is_admin=False):
-        super().__init__()
+    __tablename__ = "users"  # Must be class-level, not inside __init__
+    # Columns
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    password = db.Column(LONGTEXT, nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+
+    def __init__(self, first_name, last_name, email, password, is_admin=False):
         self.first_name = self.validate_name(first_name, "first_name",50)
         self.last_name = self.validate_name(last_name, "last_name", 50)
         self.email = self.validate_email(email)
         self.is_admin = bool(is_admin)
-        self.password = None
-   
+        self.hash_password(password)
+
     @staticmethod
     def validate_email(email):
         if not email or not isinstance(email, str):
@@ -18,7 +26,7 @@ class User(BaseModel):
         if "@" not in email:
             raise ValueError("Invalid email format")
         return email
-    
+
     def hash_password(self, password):
         """Hashes the password before storing it."""
         self.password = generate_password_hash(password)

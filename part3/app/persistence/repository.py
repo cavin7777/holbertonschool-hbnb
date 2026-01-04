@@ -29,7 +29,7 @@ from app.extensions import db
 
 class SQLAlchemyRepository(Repository):
     def __init__(self, model):
-        self.model = model
+        super().__init__()
 
     def add(self, obj):
         db.session.add(obj)

@@ -25,8 +25,6 @@ class ReviewList(Resource):
         place = facade.get_place(review_data['place_id'])
         if not place:
             return {'error': 'Place not found'}, 404
-        if not review_data:
-            return {'error': 'No review found'}, 400
         if place.owner_id == current_user:
             return {'error': 'You cannot review your own place'}, 400
         if facade.user_already_reviewed_place(current_user, review_data['place_id']):
@@ -56,7 +54,7 @@ class ReviewResource(Resource):
         review = facade.get_review(review_id)
         if not review:
             return {'error': 'Review not found'}, 404
-        if review.user_id != current_user:
+        if review.user.id != current_user:
             return {'error': 'Unauthorized action'}, 403
         return {'id': review.id, 'text': review.text, 'rating': review.rating, 'user_id': review.user.id, 'place_id': review.place.id}, 200
 
@@ -87,7 +85,7 @@ class ReviewResource(Resource):
         review = facade.get_review(review_id)
         if not review:
             return {'error': 'Review not found'}, 404
-        if review.user_id != current_user:
+        if review.user.id != current_user:
             return {'error': 'Unauthorized action'}, 403
 
         deleted_review = facade.delete_review(review_id)

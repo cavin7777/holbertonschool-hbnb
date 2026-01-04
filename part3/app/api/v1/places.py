@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
 
 api = Namespace('places', description='Place operations')
@@ -23,15 +24,18 @@ place_update = api.model('PlaceUpdate', {
 
 @api.route('/')
 class PlaceList(Resource):
+    @jwt_required()
     @api.expect(place_create)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
     def post(self):
         """Register a new place"""
         # Placeholder for the logic to register a new place
+        current_user = get_jwt_identity()
         place_data = api.payload
-
+        place_data['owner_id'] = current_user
         new_place = facade.create_place(place_data)
+
         if not new_place:
             return {'error': 'Owner not found'}, 400
         return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description, 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude,'owner_id': new_place.owner_id}, 201
@@ -61,6 +65,7 @@ class PlaceResource(Resource):
                 response["owner"] = {"id": owner.id, "first_name": owner.first_name, "last_name": owner.last_name, "email": owner.email}
         return response, 200
     
+    @jwt_required()
     @api.expect(place_update)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
@@ -68,12 +73,16 @@ class PlaceResource(Resource):
     def put(self, place_id):
         """Update a place's information"""
         # Placeholder for the logic to update a place by ID
-
+        current_user = get_jwt_identity()
         place_data = api.payload
-
-        place = facade.update_place(place_id, place_data)
+        place = facade.get_place(place_id)
         if not place:
             return {"error": "Place not found"}, 404
+        if place.owner_id != current_user:
+            return {'error': 'Unauthorized action'}, 403
+        
+        place_data = api.payload
+        updated_place = facade.update_place(place_id, place_data)
         return {"message": "Place updated successfully"}, 200
     
 @api.route('/<place_id>/reviews')

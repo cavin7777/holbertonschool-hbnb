@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
 
 api = Namespace('users', description='User operations')
@@ -49,35 +50,33 @@ class UserResource(Resource):
             return {'error': 'User_ID not found'}, 404
         return {'id': user.id, 'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email}, 200
     
+    @jwt_required()
     @api.expect(user_model)
     @api.response(200, 'User details modified successfully')
     @api.response(400, 'Email already registered')
     @api.response(404, 'Invalid Data')
     def put(self, user_id):
         """ Update user information """
+        current_user = get_jwt_identity()
         user_data = api.payload
         user = facade.get_user(user_id)
 
-        if not user_data:
-            return {'error': 'No data provided'}, 404 
-        if not user_data.get('first_name') or not user_data.get('last_name') or not user_data.get('email'):
-            return {'error': ' All Field must be filled'}, 404
-        if 'first_name' in user_data and len(user_data['first_name']) > 50:
-            return {'error': 'first_name must be at most 50 characters'}, 404
-        if 'last_name' in user_data and len(user_data['last_name']) > 50:
-            return {'error': 'last_name must be at most 50 characters'}, 404
         if not user:
             return {'error': "User_ID doesn't exist"}, 404
-
-        # Simulate email uniqueness check (to be replaced by real validation with persistence)
-        existing_user = facade.get_user_by_email(user_data['email'])
-        if existing_user and existing_user.id != user_id:
-            return {'error': 'Email already registered'}, 400
+        if user_id != current_user:
+            return {'error': 'Unauthorized action'}, 403
+        if not user_data:
+            return {'error': 'No data provided'}, 404
         
-        password = user_data.pop('password')
+        first_name = user_data.get('first_name')
+        last_name = user_data.get('last_name')
+        if not first_name or len(first_name) > 50:
+            return {'error': 'first_name must filled and be at most 50 characters'}, 404
+        if not last_name or len(last_name) > 50:
+            return {'error': 'last_name must be filled and be at most 50 characters'}, 404
+
+        if 'email' in user_data or 'password' in user_data:
+            return {'error': 'Email and password cannot be modified here'}, 400
+                    
         updated_user = facade.update_user(user_id, user_data)
-
-        if password:
-            updated_user.hash_password(password)
-        
         return {'id': updated_user.id, 'first_name': updated_user.first_name, 'last_name': updated_user.last_name, 'email': updated_user.email}, 200

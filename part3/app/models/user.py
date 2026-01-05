@@ -19,6 +19,21 @@ class User(BaseModel):
         self.is_admin = bool(is_admin)
         self.hash_password(password)
 
+    @property
+    def first_name_value(self):
+        return self.first_name
+    @first_name_value.setter
+    def first_name_value(self, value):
+        self.first_name = self.validate_name(value, "first_name", 50)
+        
+    @property
+    def last_name_value(self):
+        return self.last_name
+
+    @last_name_value.setter
+    def last_name_value(self, value):
+        self.last_name = self.validate_name(value, "last_name", 50)
+
     @staticmethod
     def validate_email(email):
         if not email or not isinstance(email, str):

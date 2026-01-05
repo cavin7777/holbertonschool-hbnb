@@ -17,7 +17,7 @@ class HBnBFacade:
     # -------------------- Placeholder method for USER --------------------
     def create_user(self, user_data):
         user = User(**user_data)
-        user.hash_password(user_data["password"])
+        # user.hash_password(user_data["password"])
         self.user_repo.add(user)
         return user
     
@@ -34,14 +34,22 @@ class HBnBFacade:
         user = self.get_user(user_id)
         if not user:
             return None
-        # If password is updated, hash it
-        if "password" in data:
-            user.hash_password(data.pop("password"))
+        
+        if 'first_name' in data:
+            user.first_name_value = data.pop('first_name')
+
+        if 'last_name' in data:
+            user.last_name_value = data.pop('last_name')
+
         self.user_repo.update(user_id, data)
         return user
     
     # # -------------------- Placeholder method for AMENITY --------------------
     def create_amenity(self, amenity_data):
+        
+        existing = self.amenity_repo.get_by_attribute("name", amenity_data["name"])
+        if existing:
+            return existing
         amenity = Amenity(**amenity_data)
         self.amenity_repo.add(amenity)
         return amenity

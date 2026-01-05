@@ -46,6 +46,8 @@ class HBnBFacade:
     
     # # -------------------- Placeholder method for AMENITY --------------------
     def create_amenity(self, amenity_data):
+        if "name" not in amenity_data:
+            raise ValueError("Amenity name is required")
         
         existing = self.amenity_repo.get_by_attribute("name", amenity_data["name"])
         if existing:
@@ -64,6 +66,10 @@ class HBnBFacade:
         amenity = self.get_amenity(amenity_id)
         if not amenity:
             return None
+        if "name" in amenity_data:
+            amenity.name = amenity.validate_name(
+                amenity_data["name"], "name", 50)
+        
         self.amenity_repo.update(amenity_id, amenity_data)
         return amenity
     

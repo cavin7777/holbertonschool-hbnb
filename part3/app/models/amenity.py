@@ -3,7 +3,7 @@ from app.extensions import db, bcrypt
 class Amenity(BaseModel):
     __tablename__ = "amenities"  # Must be class-level, not inside __init__
     # Columns
-    first_name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False, unique=True)
 
     def __init__(self, name):
         super().__init__()

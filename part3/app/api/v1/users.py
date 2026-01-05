@@ -25,16 +25,15 @@ class UserList(Resource):
         user_data = api.payload
 
         # Simulate email uniqueness check (to be replaced by real validation with persistence)
-        existing_user = facade.get_user_by_email(user_data['email'])
-        if existing_user:
+        existing_mail = facade.get_user_by_email(user_data['email'])
+        if existing_mail:
             return {'error': 'Email already registered'}, 400
 
         password = user_data.pop('password')
-        user_data['password'] = generate_password_hash(password)
-
-        new_user, msg = facade.create_user(user_data)
-        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email, 
-                'message': msg}, 201
+        user_data['password'] = password
+        
+        new_user = facade.create_user(user_data)
+        return {'id': new_user.id, 'first_name': new_user.first_name, 'last_name': new_user.last_name, 'email': new_user.email}, 201
 
     def get(self):
         """ Retrieve a list of all users """
@@ -56,7 +55,7 @@ class UserResource(Resource):
     @jwt_required()
     @api.expect(user_model)
     @api.response(200, 'User details modified successfully')
-    @api.response(400, 'Email already registered')
+    @api.response(400, 'Email and Password cannot be modify')
     @api.response(404, 'Invalid Data')
     def put(self, user_id):
         """ Update user information """

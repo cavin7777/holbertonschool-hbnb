@@ -17,9 +17,9 @@ class HBnBFacade:
     # -------------------- Placeholder method for USER --------------------
     def create_user(self, user_data):
         user = User(**user_data)
-        result = self.user_repo.add(user)
+        user.hash_password(user_data["password"])
         self.user_repo.add(user)
-        return user, "User successfully created"
+        return user
     
     def get_user(self, user_id):    
         return self.user_repo.get(user_id)
@@ -65,17 +65,15 @@ class HBnBFacade:
         if not owner:
             return None
         place = Place(**place_data)
-        result = self.place_repo.add(place)
         
         amenities = place_data.pop('amenities', [])
-        place = Place(**place_data)
         for name in amenities:
             amenity = self.amenity_repo.get_by_attribute("name", name)
             if not amenity:
                 amenity = self.create_amenity({"name": name})
             place.add_amenity(amenity)           
         self.place_repo.add(place)
-        return place, result['message']
+        return place
 
     def get_place(self, place_id):
         return self.place_repo.get(place_id)

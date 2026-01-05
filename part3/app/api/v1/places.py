@@ -57,11 +57,12 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
         
+        response =  {"id": place.id, "title": place.title, "description": place.description, "latitude": place.latitude, "longitude": place.longitude}
         owner = facade.get_user(place.owner_id)
-        response =  {"id": place.id, "title": place.title, "description": place.description, "latitude": place.latitude, "longitude": place.longitude,
-                "amenities": [{"id": amenity.id, "name": amenity.name} for amenity in place.amenities]}
         if owner:
                 response["owner"] = {"id": owner.id, "first_name": owner.first_name, "last_name": owner.last_name, "email": owner.email}
+            
+        response["amenities"] = [{"id": amenity.id, "name": amenity.name} for amenity in place.amenities]
         return response, 200
     
     @jwt_required()

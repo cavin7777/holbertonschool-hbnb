@@ -29,13 +29,11 @@ from app.extensions import db
 
 class SQLAlchemyRepository(Repository):
     def __init__(self, model):
-        super().__init__()
-        self.model = model
-
+        self.model = model  # store the model class
+    
     def add(self, obj):
         db.session.add(obj)
         db.session.commit()
-        return {'success': True, 'message': f'{self.model.__name__} added successfully', 'id': obj.id}
 
     def get(self, obj_id):
         return self.model.query.get(obj_id)

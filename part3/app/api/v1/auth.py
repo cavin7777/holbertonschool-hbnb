@@ -36,6 +36,7 @@ class Login(Resource):
 from flask_jwt_extended import jwt_required, get_jwt_identity
 @api.route('/protected')
 class ProtectedResource(Resource):
+    @api.response(200, 'User details had successfully')
     @jwt_required()
     def get(self):
          """A protected endpoint that requires a valid JWT token"""

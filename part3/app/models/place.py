@@ -4,12 +4,12 @@ from app.extensions import db
 class Place(BaseModel):
     __tablename__ = "places"  # Must be class-level, not inside __init__
     # Columns
-    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    latitute = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, default=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    owner_id = db.Column(db.String(36), db.ForeignKey("users.id"), nullable=False)
 
     def __init__(self, title, description, price, latitude, longitude, owner_id, amenities=None, reviews=None):
         super().__init__()

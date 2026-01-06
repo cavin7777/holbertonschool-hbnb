@@ -1,3 +1,4 @@
+## USERS
 Invoke-RestMethod `
   -Uri "http://127.0.0.1:5000/api/v1/users/" `
   -Method POST `
@@ -20,18 +21,17 @@ Invoke-WebRequest "http://127.0.0.1:5000/api/v1/auth/protected" -Method GET -Hea
 
 # PUT :
 
-$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzYyMDg4NiwianRpIjoiOGM3ZjYyZWEtYjU2OS00MjljLWI3YTktZjllMGI3OWU5MDYwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImY2NmY2YWI5LTRmMTYtNDczMi04ZTc4LTgwNGI2OGI2YmE5NyIsIm5iZiI6MTc2NzYyMDg4NiwiY3NyZiI6IjA0NTE1ZmNjLTc3ZDEtNDgyMy1hY2RhLTcwNmVmYzk3YWZmMSIsImV4cCI6MTc2NzYyMTc4NiwiaXNfYWRtaW4iOmZhbHNlfQ.CcIJFLp0Pqy1taZaS6ppvom5kEIsd5-bitnzmKv0F9w"
-
 Invoke-RestMethod `
-  -Uri "http://127.0.0.1:5000/api/v1/users/f66f6ab9-4f16-4732-8e78-804b68b6ba97" `
+  -Uri "http://127.0.0.1:5000/api/v1/users/c0b53a85-0e51-4a48-a15b-db69dcbd8383" `
   -Method PUT `
   -ContentType "application/json" `
-  -Headers @{ Authorization = "Bearer $token" } `
+  -Headers @{
+    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY4MDI3NywianRpIjoiMjc4M2Y5MzMtOTAyMy00MzNmLTkyODktZjRhY2M4OGQ1OTQ2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImMwYjUzYTg1LTBlNTEtNGE0OC1hMTViLWRiNjlkY2JkODM4MyIsIm5iZiI6MTc2NzY4MDI3NywiY3NyZiI6IjFiNjRmYTljLTgzMjQtNGExYy1hNWI3LWMyZTQ5Y2I2MTg0NSIsImV4cCI6MTc2NzY4MTE3NywiaXNfYWRtaW4iOmZhbHNlfQ.XJ79tsU1lzWuIJDDg7b3CXwK__pXMRz2JA247rEamvU"
+  } `
   -Body '{
-    "first_name": "",
-    "last_name": "Barton"
+    "first_name": "cavin",
+    "last_name": ""
   }'
-
 
 
 # PLACE :
@@ -49,12 +49,13 @@ Invoke-RestMethod `
         "amenities": ["TV"]
   }'
 
+# REVIEW
 Invoke-RestMethod `
   -Uri "http://127.0.0.1:5000/api/v1/reviews/" `
   -Method POST `
   -ContentType "application/json" `
   -Headers @{ 
-    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY2MzU4OCwianRpIjoiZWIyZTNlYTMtMzY1Yy00ODE4LTljYTQtNWJkNzgyNWEwNjlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjA3MmIyYWIyLWI2ZjgtNDE1ZS1hMzc1LWM5OWNlNWNhOTU3NyIsIm5iZiI6MTc2NzY2MzU4OCwiY3NyZiI6IjI1NmMxOWUxLTcxYzgtNGU4ZC04MDBkLTc2N2NhYTIwMDg2NCIsImV4cCI6MTc2NzY2NDQ4OCwiaXNfYWRtaW4iOmZhbHNlfQ.vdg1Pi4hbDywKd5OZPZk1HxvUqmFBRyxXIk5VxrlISw"
+    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY2Mzc0NSwianRpIjoiMWM4NzUwZjMtODJmYS00MTM0LTk3MjQtZDAzNjMxMjlhMWNkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Ijk0MzVmN2U4LThmMjktNDY2Ny1iOWYwLWVkNTQ5NzI5OTY3YSIsIm5iZiI6MTc2NzY2Mzc0NSwiY3NyZiI6ImE3OGY3ZWRiLWIwNGUtNGJmMC04ODgxLWEwZDE2YjYwZmM2NyIsImV4cCI6MTc2NzY2NDY0NSwiaXNfYWRtaW4iOmZhbHNlfQ.TxB8aO9sMeMic33S1L76MgQIKod5haSJnIkzVv4gDZE"
   } `
   -Body '{
     "text": "Nice",

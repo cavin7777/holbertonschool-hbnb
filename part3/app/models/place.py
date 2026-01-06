@@ -1,19 +1,18 @@
 from app.models.base_model import BaseModel
 from app.extensions import db
-from sqlalchemy import Column, String, ForeignKey, Float
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, ForeignKey, Float, DECIMAL, Text
 
 place_amenity = db.Table(
     'place_amenity', db.Model.metadata,
-    Column('place_id', String(60), ForeignKey('places.id'), primary_key=True),
-    Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True)
+    Column('place_id', String(36), ForeignKey('places.id'), primary_key=True),
+    Column('amenity_id', String(36), ForeignKey('amenities.id'), primary_key=True)
 )
 class Place(BaseModel):
     __tablename__ = "places"  # Must be class-level, not inside __init__
     # Columns
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    price = db.Column(db.DECIMAL(10, 2), nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     owner_id = db.Column(db.String(36), db.ForeignKey("users.id"), nullable=False)
@@ -29,6 +28,11 @@ class Place(BaseModel):
         self.longitude = self.validate_coordinate(longitude, "longitude", -180, 180)
         self.owner_id = owner_id
 
+    def to_dict(self):
+        data = super().to_dict()
+        data["price"] = float(self.price)
+        return data
+    
     def validate_price(self, price):
         if not isinstance(price, (int, float)) or price < 0:
             raise ValueError("Price must be positive value")

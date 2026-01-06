@@ -37,14 +37,14 @@ class PlaceList(Resource):
 
         if not new_place:
             return {'error': 'Owner not found'}, 400
-        return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description, 'price': new_place.price, 'latitude': new_place.latitude, 'longitude': new_place.longitude,'owner_id': new_place.owner_id}, 201
+        return new_place.to_dict(), 201
 
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
         # Placeholder for logic to return a list of all places
         places = facade.get_all_places()
-        return [{'id': place.id, 'title': place.title, 'description': place.description, 'price': place.price, 'latitude': place.latitude, 'longitude': place.longitude,} for place in places], 200
+        return [place.to_dict() for place in places], 200
 
 @api.route('/<place_id>')
 class PlaceResource(Resource):
@@ -57,7 +57,7 @@ class PlaceResource(Resource):
         if not place:
             return {'error': 'Place not found'}, 404
         
-        response =  {"id": place.id, "title": place.title, "description": place.description, "latitude": place.latitude, "longitude": place.longitude}
+        response = place.to_dict()
         owner = facade.get_user(place.owner_id)
         if owner:
                 response["owner"] = {"id": owner.id, "first_name": owner.first_name, "last_name": owner.last_name, "email": owner.email}

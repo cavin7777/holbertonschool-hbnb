@@ -7,7 +7,6 @@ BASE_URL = "http://127.0.0.1:5000/api/v1"
 # -----------------------
 users = [
     {"first_name": "Cavin", "last_name": "Vencadoo", "email": "cavin@test.com", "password": "secret123"},
-    {"first_name": "Alice", "last_name": "Doe", "email": "alice@test.com", "password": "alice123"}
 ]
 
 created_users = {}

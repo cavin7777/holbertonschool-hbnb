@@ -39,7 +39,7 @@ Invoke-RestMethod `
   -Uri "http://127.0.0.1:5000/api/v1/places/" `
   -Method POST `
   -ContentType "application/json" `
-  -Headers @{ Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY2MjM4MCwianRpIjoiMjIwNDNiMzQtNTMwYy00YmRkLWIyODEtZjdjY2IxOGQ3YjExIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjA3MmIyYWIyLWI2ZjgtNDE1ZS1hMzc1LWM5OWNlNWNhOTU3NyIsIm5iZiI6MTc2NzY2MjM4MCwiY3NyZiI6ImNmOGNiMGM5LWY5ZGUtNGMwMC1iYmU3LWZmODVkYzNkYzMxNiIsImV4cCI6MTc2NzY2MzI4MCwiaXNfYWRtaW4iOmZhbHNlfQ.tRMbCAzlbeMUxq-kpIgVXeSEMCRKKcxN1K5RrAl0Cr0" } `
+  -Headers @{ Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY4MjM2NywianRpIjoiOGZhYWM2ZDUtMmU5OC00NWU0LWE2NDQtNTQ5OGY0YjU4OTY2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImMwYjUzYTg1LTBlNTEtNGE0OC1hMTViLWRiNjlkY2JkODM4MyIsIm5iZiI6MTc2NzY4MjM2NywiY3NyZiI6IjA1ZDFhYjM1LTI5ZDEtNDBmNC04MWM3LWUyODdkN2UyOTZjNSIsImV4cCI6MTc2NzY4MzI2NywiaXNfYWRtaW4iOmZhbHNlfQ.9cBXqm3k25PnEwBbEfo3iWb6oJmuqJrWKSwFEMNA51c" } `
   -Body '{
         "title": "Cozy Palace",
         "description": "Nice and cozy",
@@ -55,17 +55,11 @@ Invoke-RestMethod `
   -Method POST `
   -ContentType "application/json" `
   -Headers @{ 
-    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY2Mzc0NSwianRpIjoiMWM4NzUwZjMtODJmYS00MTM0LTk3MjQtZDAzNjMxMjlhMWNkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Ijk0MzVmN2U4LThmMjktNDY2Ny1iOWYwLWVkNTQ5NzI5OTY3YSIsIm5iZiI6MTc2NzY2Mzc0NSwiY3NyZiI6ImE3OGY3ZWRiLWIwNGUtNGJmMC04ODgxLWEwZDE2YjYwZmM2NyIsImV4cCI6MTc2NzY2NDY0NSwiaXNfYWRtaW4iOmZhbHNlfQ.TxB8aO9sMeMic33S1L76MgQIKod5haSJnIkzVv4gDZE"
+    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY4MjU4NywianRpIjoiMzUwNjEzODMtMGE1Ni00NGNkLWFhNzEtOWU1ODBmNGZjNjlkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImM0OWM1NWM5LTczMDEtNDFlYS04YzllLTJiOWQ0NjBjMzk0MiIsIm5iZiI6MTc2NzY4MjU4NywiY3NyZiI6IjUzNDgxN2E0LTE3NTItNGQ3OS1hYzE3LTUwZGM0MGQ2MjVlYyIsImV4cCI6MTc2NzY4MzQ4NywiaXNfYWRtaW4iOmZhbHNlfQ.c81vyFzjiJwNgT1EqGYeyOkqjdd0ouyHcUKKyJulEA0"
   } `
   -Body '{
     "text": "Nice",
     "rating": 4,
-    "place_id": "4ff6507b-0e30-46c2-a4a4-d4e039918434"
+    "place_id": "3ed4d665-33a9-4693-8012-94d81719e82f"
   }'
 
-{
-  "first_name": "Joe",
-  "last_name": "Dan",
-  "email": "dan@gmail.com",
-  "password": "dan123"
-}

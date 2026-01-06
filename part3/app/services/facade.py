@@ -78,14 +78,19 @@ class HBnBFacade:
         owner = self.get_user(place_data.get('owner_id'))
         if not owner:
             return None
-        place = Place(**place_data)
         
         amenities = place_data.pop('amenities', [])
+        place = Place(**place_data)
+        place.amenities = []
+        
         for name in amenities:
+            if not name:
+                continue
             amenity = self.amenity_repo.get_by_attribute("name", name)
             if not amenity:
-                amenity = self.create_amenity({"name": name})
-            place.add_amenity(amenity)           
+                amenity = Amenity(name=name)
+                self.amenity_repo.add(amenity)
+            place.amenities.append(amenity)      
         self.place_repo.add(place)
         return place
 
@@ -110,7 +115,8 @@ class HBnBFacade:
         if not user or not place:
             return None
         
-        review = Review(**review_data)
+        
+        review = Review(text=review_data.get("text"), rating=review_data.get("rating"), user=user, place=place)
         self.review_repo.add(review)
         return review
 
@@ -137,6 +143,16 @@ class HBnBFacade:
             return None
         self.review_repo.update(review_id, review_data)
         return review
+    
+    def user_already_reviewed_place(self, user_id, place_id):
+        """
+        Returns True if the user has already reviewed the place, False otherwise
+        """
+        reviews = self.review_repo.get_all()
+        for review in reviews:
+            if review.user_id == user_id and review.place_id == place_id:
+                return True
+        return False
 
     def delete_review(self, review_id):
     # Placeholder for logic to delete a review

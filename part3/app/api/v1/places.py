@@ -81,7 +81,6 @@ class PlaceResource(Resource):
         if place.owner_id != current_user:
             return {'error': 'Unauthorized action'}, 403
         
-        place_data = api.payload
         updated_place = facade.update_place(place_id, place_data)
         return {"message": "Place updated successfully"}, 200
     

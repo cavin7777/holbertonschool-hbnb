@@ -28,7 +28,7 @@ Invoke-RestMethod `
   -ContentType "application/json" `
   -Headers @{ Authorization = "Bearer $token" } `
   -Body '{
-    "first_name": "Joe2",
+    "first_name": "",
     "last_name": "Barton"
   }'
 
@@ -39,13 +39,32 @@ Invoke-RestMethod `
   -Uri "http://127.0.0.1:5000/api/v1/places/" `
   -Method POST `
   -ContentType "application/json" `
-  -Headers @{ Authorization = "Bearer YOUR_JWT_TOKEN_HERE" } `
+  -Headers @{ Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY2MjM4MCwianRpIjoiMjIwNDNiMzQtNTMwYy00YmRkLWIyODEtZjdjY2IxOGQ3YjExIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjA3MmIyYWIyLWI2ZjgtNDE1ZS1hMzc1LWM5OWNlNWNhOTU3NyIsIm5iZiI6MTc2NzY2MjM4MCwiY3NyZiI6ImNmOGNiMGM5LWY5ZGUtNGMwMC1iYmU3LWZmODVkYzNkYzMxNiIsImV4cCI6MTc2NzY2MzI4MCwiaXNfYWRtaW4iOmZhbHNlfQ.tRMbCAzlbeMUxq-kpIgVXeSEMCRKKcxN1K5RrAl0Cr0" } `
   -Body '{
-        "title": "Cozy Apartment",
+        "title": "Cozy Palace",
         "description": "Nice and cozy",
-        "price": 50.0,
-        "latitude": -20.1609,
-        "longitude": 57.5012,
-        "owner_id": created_users["cavin@test.com"],
-        "amenities": list(created_amenities.values())
+        "price": 500.0,
+        "latitude": -30.1609,
+        "longitude": -57.5012,
+        "amenities": ["TV"]
   }'
+
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:5000/api/v1/reviews/" `
+  -Method POST `
+  -ContentType "application/json" `
+  -Headers @{ 
+    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY2MzU4OCwianRpIjoiZWIyZTNlYTMtMzY1Yy00ODE4LTljYTQtNWJkNzgyNWEwNjlhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjA3MmIyYWIyLWI2ZjgtNDE1ZS1hMzc1LWM5OWNlNWNhOTU3NyIsIm5iZiI6MTc2NzY2MzU4OCwiY3NyZiI6IjI1NmMxOWUxLTcxYzgtNGU4ZC04MDBkLTc2N2NhYTIwMDg2NCIsImV4cCI6MTc2NzY2NDQ4OCwiaXNfYWRtaW4iOmZhbHNlfQ.vdg1Pi4hbDywKd5OZPZk1HxvUqmFBRyxXIk5VxrlISw"
+  } `
+  -Body '{
+    "text": "Nice",
+    "rating": 4,
+    "place_id": "4ff6507b-0e30-46c2-a4a4-d4e039918434"
+  }'
+
+{
+  "first_name": "Joe",
+  "last_name": "Dan",
+  "email": "dan@gmail.com",
+  "password": "dan123"
+}

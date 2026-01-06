@@ -115,7 +115,6 @@ class HBnBFacade:
         if not user or not place:
             return None
         
-        
         review = Review(text=review_data.get("text"), rating=review_data.get("rating"), user=user, place=place)
         self.review_repo.add(review)
         return review

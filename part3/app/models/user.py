@@ -1,7 +1,6 @@
 from .base_model import BaseModel
 from app.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
-# from sqlalchemy.dialects.mysql import LONGTEXT
 
 class User(BaseModel):
     __tablename__ = "users"  # Must be class-level, not inside __init__

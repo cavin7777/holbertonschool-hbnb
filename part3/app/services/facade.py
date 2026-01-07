@@ -30,18 +30,17 @@ class HBnBFacade:
     def get_user_by_email(self, email):
         return self.user_repo.get_user_by_email(email)
     
-    def update_user(self, user_id, data):
+    def update_user(self, user_id, user_data):
         user = self.get_user(user_id)
         if not user:
             return None
         
-        if 'first_name' in data:
-            user.first_name_value = data.pop('first_name')
+        if "first_name" in user_data:
+            user.first_name_value = user_data["first_name"]
+        if "last_name" in user_data:
+            user.last_name_value = user_data["last_name"]
 
-        if 'last_name' in data:
-            user.last_name_value = data.pop('last_name')
-
-        self.user_repo.update(user_id, data)
+        self.user_repo.update(user_id, user_data)
         return user
     
     # # -------------------- Placeholder method for AMENITY --------------------

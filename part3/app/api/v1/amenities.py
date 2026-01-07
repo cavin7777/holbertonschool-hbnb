@@ -19,6 +19,7 @@ class AmenityList(Resource):
         amenity_data = api.payload
         if not amenity_data:
             return {'Invalid input data'}, 400
+
         new_amenity = facade.create_amenity(amenity_data)
         return {'id': new_amenity.id, 'name': new_amenity.name}, 201
 

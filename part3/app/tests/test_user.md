@@ -16,7 +16,7 @@ Invoke-RestMethod `
   "password": "string123"
 }
 
-# PROTECTED :
+## PROTECTED :
 Invoke-WebRequest "http://127.0.0.1:5000/api/v1/auth/protected" -Method GET -Headers @{ Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzYyMDU5NywianRpIjoiNDBkYmY1NTctNDlhOS00ODUwLTg3OWYtNTUwZTUwY2NmZmI1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImY2NmY2YWI5LTRmMTYtNDczMi04ZTc4LTgwNGI2OGI2YmE5NyIsIm5iZiI6MTc2NzYyMDU5NywiY3NyZiI6Ijk0MzQ2YmYyLThkODAtNDJiNi1iNGVmLWQ2YTM3ZjQ0MWM3MCIsImV4cCI6MTc2NzYyMTQ5NywiaXNfYWRtaW4iOmZhbHNlfQ0Fwna-rzhmvZkGOgrSVE4Oq1uXWeY6i2BTcKGAGHP5c" }
 
 # PUT :
@@ -26,13 +26,31 @@ Invoke-RestMethod `
   -Method PUT `
   -ContentType "application/json" `
   -Headers @{
-    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY4MDI3NywianRpIjoiMjc4M2Y5MzMtOTAyMy00MzNmLTkyODktZjRhY2M4OGQ1OTQ2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImMwYjUzYTg1LTBlNTEtNGE0OC1hMTViLWRiNjlkY2JkODM4MyIsIm5iZiI6MTc2NzY4MDI3NywiY3NyZiI6IjFiNjRmYTljLTgzMjQtNGExYy1hNWI3LWMyZTQ5Y2I2MTg0NSIsImV4cCI6MTc2NzY4MTE3NywiaXNfYWRtaW4iOmZhbHNlfQ.XJ79tsU1lzWuIJDDg7b3CXwK__pXMRz2JA247rEamvU"
+    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2Nzc2NjEyNywianRpIjoiOGI4ZTgzODAtY2Q3OC00YWE4LThmNzAtMWYwZmQ3YzZkNjY0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImMwYjUzYTg1LTBlNTEtNGE0OC1hMTViLWRiNjlkY2JkODM4MyIsIm5iZiI6MTc2Nzc2NjEyNywiY3NyZiI6ImVlMTA3MTgzLTNmYTYtNDkzZi1iZWI0LWNkMTg0OGIyMTI4YyIsImV4cCI6MTc2Nzc2NzAyNywiaXNfYWRtaW4iOmZhbHNlfQ.JHLlp4lo79UgxQsuVQFsggbxoVFbgWwHDkSPGwXjgs4"
   } `
   -Body '{
-    "first_name": "cavin",
-    "last_name": ""
+    "first_name": "cavin1",
+    "last_name": "vencadoo"
   }'
+# NO DATA FOUND
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:5000/api/v1/users/USER_A_ID" `
+  -Method PUT `
+  -ContentType "application/json" `
+  -Headers @{
+    Authorization = "Bearer USER_B_JWT_TOKEN"
+  } `
+  -Body "{}"
 
+# Unauthorized action
+Invoke-RestMethod `
+  -Uri "http://127.0.0.1:5000/api/v1/users/c49c55c9-7301-41ea-8c9e-2b9d460c3942" `
+  -Method PUT `
+  -ContentType "application/json" `
+  -Headers @{
+    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2Nzc2NDgxOSwianRpIjoiYzkyZjdlYTItNDgwOC00ZTEwLTlkMTItNTJiNjVmNjg0ODc5IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImMwYjUzYTg1LTBlNTEtNGE0OC1hMTViLWRiNjlkY2JkODM4MyIsIm5iZiI6MTc2Nzc2NDgxOSwiY3NyZiI6IjhkMjMwOTg5LTE0ZDQtNDIxNi05YjI4LWZhZWViNGI1ZmM5MCIsImV4cCI6MTc2Nzc2NTcxOSwiaXNfYWRtaW4iOmZhbHNlfQ.p6sWwHD8KIqLdUuS_IQwXlm2dB9YezsLvNeHMqnsTTw"
+  } `
+  -Body "{}"
 
 # PLACE :
 Invoke-RestMethod `

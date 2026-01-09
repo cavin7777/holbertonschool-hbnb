@@ -6,7 +6,6 @@ from app.extensions import db
 class Review(BaseModel):
     __tablename__ = "reviews"
 
-    id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     place_id = db.Column(db.String(36), db.ForeignKey("places.id"), nullable=False)

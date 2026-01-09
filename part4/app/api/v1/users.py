@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, fields
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
-from werkzeug.security import generate_password_hash
+from flask import request, jsonify
 
 api = Namespace('users', description='User operations')
 
@@ -24,12 +24,10 @@ class UserList(Resource):
     @api.response(201, 'User successfully created')
     @api.response(400, 'Email already registered')
     @api.response(404, 'Invalid input data')
-
     def post(self):
         """Register a new user"""
         user_data = api.payload
 
-        # Simulate email uniqueness check (to be replaced by real validation with persistence)
         existing_mail = facade.get_user_by_email(user_data['email'])
         if existing_mail:
             return {'error': 'Email already registered'}, 400
@@ -63,22 +61,22 @@ class UserResource(Resource):
     @api.response(404, 'Invalid Data')
     def put(self, user_id):
         """ Update user information """
-        current_user = get_jwt_identity()
-        user_data = api.payload
-        user = facade.get_user(user_id)
+        current_user_id = get_jwt_identity()
 
-        if not user:
-            return {'error': "User_ID doesn't exist"}, 404
-        if user_id != current_user:
-            return {'error': 'Unauthorized action'}, 403
+        user_data = api.payload
         if not user_data:
-            return {'error': 'No data provided'}, 404
+            return {'error': 'No data provided'}, 404 # OK TEST
+        
+        user = facade.get_user(user_id)
+        if not user:
+            return {'error': "User_ID doesn't exist"}, 404 # OK TEST
+        
+        if current_user_id != user_id:
+            return {'error': 'Unauthorized action'}, 403 #OK TEST
         
         try:
             updated_user = facade.update_user(user_id, user_data)
-            if not updated_user:
-                return {'error': "User_ID doesn't exist"}, 404
         except ValueError as e:
             return {'error': str(e)}, 400
-                    
+             
         return {'id': updated_user.id, 'first_name': updated_user.first_name, 'last_name': updated_user.last_name}, 200

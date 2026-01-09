@@ -31,3 +31,13 @@
        │ place_repo = InMemoryRepository()
        │ ...                    │
        └────────────────────────┘
+
+
+Route (Flask-RESTX)
+    ↓  auth / permissions
+Facade (HBnBFacade)
+    ↓  orchestration only
+Model (User)
+    ↓  validation + business rules
+Repository
+    ↓  DB commit only

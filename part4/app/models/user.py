@@ -1,7 +1,6 @@
 from .base_model import BaseModel
 from app.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
-# from sqlalchemy.dialects.mysql import LONGTEXT
 
 class User(BaseModel):
     __tablename__ = "users"  # Must be class-level, not inside __init__
@@ -18,7 +17,7 @@ class User(BaseModel):
         self.last_name = self.validate_name(last_name, "last_name", 50)
         self.email = self.validate_email(email)
         self.is_admin = bool(is_admin)
-        self.hash_password(password)
+        self.set_password(password)
 
     @property
     def first_name_value(self):
@@ -34,16 +33,22 @@ class User(BaseModel):
     def last_name_value(self, value):
         self.last_name = self.validate_name(value, "last_name", 50)
 
-    @staticmethod
-    def validate_email(email):
-        if not email or not isinstance(email, str):
-            raise ValueError("Email must be a non-empty string")
-        if "@" not in email:
-            raise ValueError("Invalid email format")
-        return email
+    @property
+    def email_validation(self):
+        return self.email
+    @email_validation.setter
+    def email_validation(self, value):
+        self.email = self.validate_email(value)
 
-    def hash_password(self, password):
-        """Hashes the password before storing it."""
+    @property
+    def password_verification(self):
+        return self.password
+    @password_verification.setter
+    def password_validation(self, value):
+        self.password = self.validate_password(value)
+    
+    def set_password(self, password):
+        password = self.validate_password(password)
         self.password = generate_password_hash(password)
     
     def verify_password(self, password):

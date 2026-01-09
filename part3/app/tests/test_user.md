@@ -4,10 +4,10 @@ Invoke-RestMethod `
   -Method POST `
   -ContentType "application/json" `
   -Body '{
-    "first_name": "Cavin",
-    "last_name": "Vencadoo",
-    "email": "cavin@test.com",
-    "password": "secret123"
+    'first_name': 'Super',
+    'last_name': 'Admin',
+    'email': 'admin@example.com',
+    'password': 'SecurePass123',
   }'
 
 # LOGIN :
@@ -22,14 +22,14 @@ Invoke-WebRequest "http://127.0.0.1:5000/api/v1/auth/protected" -Method GET -Hea
 # PUT :
 
 Invoke-RestMethod `
-  -Uri "http://127.0.0.1:5000/api/v1/users/c0b53a85-0e51-4a48-a15b-db69dcbd8383" `
+  -Uri "http://127.0.0.1:5000/api/v1/users/36b1890a-7e6d-4846-9fbe-f1f0689ae887" `
   -Method PUT `
   -ContentType "application/json" `
   -Headers @{
-    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2Nzc2NjEyNywianRpIjoiOGI4ZTgzODAtY2Q3OC00YWE4LThmNzAtMWYwZmQ3YzZkNjY0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImMwYjUzYTg1LTBlNTEtNGE0OC1hMTViLWRiNjlkY2JkODM4MyIsIm5iZiI6MTc2Nzc2NjEyNywiY3NyZiI6ImVlMTA3MTgzLTNmYTYtNDkzZi1iZWI0LWNkMTg0OGIyMTI4YyIsImV4cCI6MTc2Nzc2NzAyNywiaXNfYWRtaW4iOmZhbHNlfQ.JHLlp4lo79UgxQsuVQFsggbxoVFbgWwHDkSPGwXjgs4"
+    Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2Nzk0MjQxMCwianRpIjoiNDczNDk5MDktMjFhMC00OGJhLWJhYTktZmViOTYxZjIzYjI0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjM2YjE4OTBhLTdlNmQtNDg0Ni05ZmJlLWYxZjA2ODlhZTg4NyIsIm5iZiI6MTc2Nzk0MjQxMCwiY3NyZiI6ImYxZmY1ZjQ5LTQ4YmYtNGZhMy05MGQwLWIzNWY3NDEyYzMxMyIsImV4cCI6MTc2Nzk0MzMxMCwiaXNfYWRtaW4iOmZhbHNlfQ.4v3Z1ccwpvp_r-QkNBRRe7EenZqOsn8bnEghrcdI8nA"
   } `
   -Body '{
-    "first_name": "cavin1",
+    "first_name": "cavin3",
     "last_name": "vencadoo"
   }'
 # NO DATA FOUND
@@ -52,12 +52,12 @@ Invoke-RestMethod `
   } `
   -Body "{}"
 
-# PLACE :
+# POST PLACE :
 Invoke-RestMethod `
   -Uri "http://127.0.0.1:5000/api/v1/places/" `
   -Method POST `
   -ContentType "application/json" `
-  -Headers @{ Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2NzY4MjM2NywianRpIjoiOGZhYWM2ZDUtMmU5OC00NWU0LWE2NDQtNTQ5OGY0YjU4OTY2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImMwYjUzYTg1LTBlNTEtNGE0OC1hMTViLWRiNjlkY2JkODM4MyIsIm5iZiI6MTc2NzY4MjM2NywiY3NyZiI6IjA1ZDFhYjM1LTI5ZDEtNDBmNC04MWM3LWUyODdkN2UyOTZjNSIsImV4cCI6MTc2NzY4MzI2NywiaXNfYWRtaW4iOmZhbHNlfQ.9cBXqm3k25PnEwBbEfo3iWb6oJmuqJrWKSwFEMNA51c" } `
+  -Headers @{ Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2Nzk0NDExOSwianRpIjoiYzU4NWFhNWItNDU2ZS00MTY4LTgxMDgtNmNiYjRiMGMwMzY4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjM2YjE4OTBhLTdlNmQtNDg0Ni05ZmJlLWYxZjA2ODlhZTg4NyIsIm5iZiI6MTc2Nzk0NDExOSwiY3NyZiI6ImVjNDBiNDM5LTdmOWMtNGRmNy05OWY3LWIzYjgzMWRhMTMyNCIsImV4cCI6MTc2Nzk0NTAxOSwiaXNfYWRtaW4iOmZhbHNlfQ.dUPdcSpj7XgpmIN-MH13FlQ6K-HgbrPj5pAXnEgiVk8" } `
   -Body '{
         "title": "Cozy Palace",
         "description": "Nice and cozy",
@@ -66,6 +66,18 @@ Invoke-RestMethod `
         "longitude": -57.5012,
         "amenities": ["TV"]
   }'
+
+# PUT PLACE : 
+Invoke-RestMethod `
+>>   -Uri "http://127.0.0.1:5000/api/v1/places/8c60502a-96b6-4dad-8dfc-f7b5414a76b9" `
+>>   -Method PUT `
+>>   -ContentType "application/json" `
+>>   -Headers @{ Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2Nzk0NjE2OCwianRpIjoiOTdhNjBmODctZTM4My00MTJlLWExNWItNDQxN2MyNjZjMTAzIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjM2YjE4OTBhLTdlNmQtNDg0Ni05ZmJlLWYxZjA2ODlhZTg4NyIsIm5iZiI6MTc2Nzk0NjE2OCwiY3NyZiI6IjUwYjM4ODAxLWQ1MzgtNDU2ZS05YmZiLTdlZGRjMDU1YjYxYSIsImV4cCI6MTc2Nzk0NzA2OCwiaXNfYWRtaW4iOmZhbHNlfQ.d9Ic3-20c4WjZB87ilnWlk_MuoRm2AN87qIV1C5xlj4" } `
+>>   -Body '{
+>>         "title": "Cozy Palace_1",
+>>         "description": "Nice and cozy",
+>>         "price": 500.0,
+>>   }'
 
 # REVIEW
 Invoke-RestMethod `

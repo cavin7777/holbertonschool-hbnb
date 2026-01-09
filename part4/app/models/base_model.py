@@ -51,3 +51,17 @@ class BaseModel(db.Model):
             if hasattr(self, key):
                 setattr(self, key, value)
         self.save()  # Update the updated_at timestamp
+
+    def to_dict(self):
+        """Convert model to dictionary"""
+        data = {}
+
+        for column in self.__table__.columns:
+            value = getattr(self, column.name)
+
+            if isinstance(value, datetime):
+                value = value.isoformat()
+
+            data[column.name] = value
+
+        return data

@@ -29,7 +29,7 @@ def create_app(config_class="config.DevelopmentConfig"):
     api.add_namespace(auth_ns, path='/api/v1/auth')
 
     # Register the auth routes namespace
-    api.add_namespace(admin_ns, path='/api/v1/')
+    api.add_namespace(admin_ns, path='/api/v1/admin')
 
     bcrypt.init_app(app)
     jwt.init_app(app)

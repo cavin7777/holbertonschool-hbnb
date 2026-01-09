@@ -26,6 +26,22 @@ class BaseModel(db.Model):
         return float(value)
     
     @staticmethod
+    def validate_email(email):
+        if not email or not isinstance(email, str):
+            raise ValueError("Email must be a non-empty string")
+        if "@" not in email or "." not in email:
+            raise ValueError("Invalid email format")
+        return email
+    
+    @staticmethod
+    def validate_password(password):
+        if not password or not isinstance(password, str):
+            raise ValueError("Password must not be empty")
+        if len(password) < 8:
+            raise ValueError("Password must be at least 8 characters long")
+        return password
+    
+    @staticmethod
     def validate_user(value, field_name):
         from .user import User
         if not isinstance(value, User):

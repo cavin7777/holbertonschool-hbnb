@@ -17,7 +17,7 @@ class HBnBFacade:
     # -------------------- Placeholder method for USER --------------------
     def create_user(self, user_data):
         user = User(**user_data)
-        # user.hash_password(user_data["password"])
+        
         self.user_repo.add(user)
         return user
     
@@ -114,7 +114,6 @@ class HBnBFacade:
         place = self.get_place(review_data.get('place_id'))
         if not user or not place:
             return None
-        
         
         review = Review(text=review_data.get("text"), rating=review_data.get("rating"), user=user, place=place)
         self.review_repo.add(review)

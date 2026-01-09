@@ -6,6 +6,7 @@ from app.services.repositories.user_repository import UserRepository
 from app.services.repositories.place_repository import PlaceRepository
 from app.services.repositories.review_repository import ReviewRepository
 from app.services.repositories.amenity_repository import AmenityRepository
+from werkzeug.security import generate_password_hash
   
 class HBnBFacade:
     def __init__(self):
@@ -16,7 +17,8 @@ class HBnBFacade:
     
     # -------------------- Placeholder method for USER --------------------
     def create_user(self, user_data):
-        user = User(**user_data)
+        password = user_data.pop("password")
+        user = User(**user_data, password=password)
         
         self.user_repo.add(user)
         return user
@@ -34,12 +36,20 @@ class HBnBFacade:
         user = self.get_user(user_id)
         if not user:
             return None
-        
-        if "first_name" in user_data:
-            user.first_name_value = user_data["first_name"]
-        if "last_name" in user_data:
-            user.last_name_value = user_data["last_name"]
 
+        for field, value in user_data.items():
+            if field == "first_name":
+                user.first_name_value = value
+            elif field == "last_name":
+                user.last_name_value = value
+            elif field == "email":
+                user.email_validation = value
+            elif field == "password":
+                user.set_password(value)
+            elif field == "is_admin":
+                user.is_admin = bool(value)
+        
+        user_data.pop("password", None)
         self.user_repo.update(user_id, user_data)
         return user
     
@@ -103,6 +113,11 @@ class HBnBFacade:
         place = self.get_place(place_id)
         if not place:
             return None
+        amenity_names = place_data.pop("amenities", [])
+        if amenity_names:
+            all_amenities = self.amenity_repo.get_all()  # fetch all existing Amenity objects
+            amenities = [a for a in all_amenities if a.name in amenity_names]
+            place.amenities = amenities
         self.place_repo.update(place_id, place_data)
         return place
     

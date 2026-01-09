@@ -61,7 +61,7 @@ class UserResource(Resource):
     @api.response(404, 'Invalid Data')
     def put(self, user_id):
         """ Update user information """
-        current_user = get_jwt_identity()
+        current_user_id = get_jwt_identity()
 
         user_data = api.payload
         if not user_data:
@@ -71,9 +71,8 @@ class UserResource(Resource):
         if not user:
             return {'error': "User_ID doesn't exist"}, 404 # OK TEST
         
-        user_id_from_token = get_jwt_identity()  # returns string ID
-        if user_id_from_token != user_id:
-            return {'error': 'Unauthorized action'}, 403
+        if current_user_id != user_id:
+            return {'error': 'Unauthorized action'}, 403 #OK TEST
         
         try:
             updated_user = facade.update_user(user_id, user_data)

@@ -45,11 +45,11 @@ Invoke-RestMethod `
 
   # PUT AMENITY : 
   Invoke-RestMethod `
-  -Uri "http://127.0.0.1:5000/api/v1/admin/amenities/YOUR_AMENITY_ID" `
+  -Uri "http://127.0.0.1:5000/api/v1/admin/amenities/2d807d9a-fac5-425f-ad2f-4838b680efd7" `
   -Method PUT `
   -ContentType "application/json" `
   -Headers @{
-      Authorization = "Bearer YOUR_ADMIN_JWT_TOKEN"
+      Authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc2Nzk0MzMwNywianRpIjoiYzAwMGZiZGEtMGFmNi00MWFkLTk2NWItODIzNDc3OTVmZWVkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjJmYTUyNWZhLTZiMjMtNDY0NS04NjhlLTIxMzcwZjE2NTIxNCIsIm5iZiI6MTc2Nzk0MzMwNywiY3NyZiI6IjcyOGQxNWY2LTFlN2QtNDg4Ny05ZDRlLTJlNTNhYTg5MGM3MSIsImV4cCI6MTc2Nzk0NDIwNywiaXNfYWRtaW4iOnRydWV9._xF4-M3XG7RGH4x_DaK8Rh0DExdMgZdJZof2jZ5QGnA"
   } `
   -Body '{
     "name": "High-Speed WiFi"

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <img src="images/logo.png" class="logo" alt="Logo">
+        </div>
+        <nav class="header-right">
+            <a href="login.html" id="login-logout" class="login-button">Login</a>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        <!-- PLACE TITLE -->
+        <h1 id="place-title" class="place-title">Place Title</h1>
+
+        <!-- PLACE INFO CARD -->
+        <section class="place-card" id="place-info">
+            <!-- Dynamic content populated via scripts.js -->
+        </section>
+
+        <!-- REVIEWS SECTION -->
+        <section class="reviews-section">
+            <h2>Reviews</h2>
+            <div id="reviews">
+                <!-- Review cards populated dynamically -->
+            </div>
+        </section>
+
+        <!-- ADD REVIEW FORM (shown only if logged in) -->
+        <section id="add-review" class="add-review" style="display: none;">
+            <div class="review-card">
+                <h3>Add a Review</h3>
+                <form id="review-form">
+                    <label for="review-text">Review:</label>
+                    <textarea id="review-text" name="review-text" required placeholder="Write your review here..."></textarea>
+
+                    <label for="rating">Rating (1-5):</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" required>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>All rights reserved &copy; 2026</footer>
+
+    <!-- SCRIPTS -->
+    <script src="scripts.js"></script>
+</body>
+</html>

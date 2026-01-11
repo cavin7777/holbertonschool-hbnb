@@ -7,6 +7,7 @@ from app.api.v1.places import api as places_ns
 from app.api.v1.reviews import api as reviews_ns
 from app.api.v1.auth import api as auth_ns
 from app.api.v1.admin import api as admin_ns
+from flask_cors import CORS
 
 def create_app(config_class="config.DevelopmentConfig"):
     app = Flask(__name__)
@@ -34,5 +35,6 @@ def create_app(config_class="config.DevelopmentConfig"):
     bcrypt.init_app(app)
     jwt.init_app(app)
     db.init_app(app)
+    CORS(app)
 
     return app

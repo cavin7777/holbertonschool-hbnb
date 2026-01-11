@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HBnB - Available Places</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="logo">hbnb</div>
+    <nav>
+    <a href="login.html" id="login-link" class="login-button">Login</a>
+    <a href="#" id="logout-link" class="login-button" style="display:none;">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Available Places</h1>
+    
+    <div class="filter">
+      <label for="price-filter">Max Price:</label>
+      <select id="price-filter">
+        <option value="All">All</option>
+        <option value="100">$100</option>
+        <option value="150">$150</option>
+        <option value="200">$200</option>
+        <option value="250">$250</option>
+      </select>
+    </div>
+
+    <div id="places-list" class="places-grid">
+      <!-- Places cards inserted here by JS -->
+    </div>
+  </main>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
